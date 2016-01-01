@@ -1,6 +1,6 @@
 echo " deleteing context folders "
-rm -rf /opt/stack
-rm -rf /usr/local/bin/
+sudo rm -rf /opt/stack
+sudo rm -rf /usr/local/bin/
 cd /devstack
 echo " cleaing stack "
 ./clean.sh
