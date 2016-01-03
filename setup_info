@@ -1,0 +1,41 @@
+import paramiko
+import os
+import time
+import sys
+import re
+
+path = '/qa-test-repo/devops/setup'
+results_path = '/qa-test-repo/devops/setup_info'
+password = 'root123'
+username = 'root'
+Check_release = 'cat /etc/issue'
+contrail_version = 'contrail-version'
+
+
+with open(path) as f:
+    lines = f.readlines()
+
+print lines
+
+for ip in lines:
+  print ip
+
+client = paramiko.SSHClient()
+client.load_system_host_keys()
+client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+client.connect(ip, username="root", password="root123")
+stdin, stdout, stderr = client.exec_command(Check_release)
+type(stdin)
+Check_release_result=stdout.read()
+print Check_release_result
+print 'Done!'
+stdin, stdout, stderr = client.exec_command(contrail_version)
+type(stdin)
+contrail_version_result=stdout.read()
+print contrail_version_result
+print 'Done!'
+
+f = open(results_path, 'r+')
+f.write('This Is Setup \n' + ip + '\n' +'This is contrail Version \n' + contrail_version_result + '\n ' + 'Operating System Version '+ Check_release_result + '\n')
+
+client.close()
